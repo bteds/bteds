@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>青柠校园  - 校园社区</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #4778f5;
+    --bg: #f4f6fb;
+    --text: #263247;
+    --muted: #8993a5;
+    --card: #ffffff;
+}
+
+body {
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+button, input, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.navbar {
+    height: 68px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+    box-shadow: 0 2px 12px #1c315008;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    gap: 20px;
+}
+
+.logo {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: #ffb547;
+}
+
+.nav-links {
+    display: flex;
+    gap: 26px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #667085;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.user {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.hero {
+    margin: 28px auto;
+    max-width: 1180px;
+    min-height: 220px;
+    border-radius: 22px;
+    padding: 40px 45px;
+    color: white;
+    background: linear-gradient(120deg, #4778f5, #7a67e9 70%, #ad8cf4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-size: 34px;
+    margin-bottom: 14px;
+}
+
+.hero p {
+    line-height: 1.8;
+    opacity: .92;
+}
+
+.hero-art {
+    font-size: 90px;
+    padding-right: 35px;
+}
+
+.hero button {
+    background: white;
+    color: var(--primary);
+    padding: 11px 23px;
+    border-radius: 9px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1180px;
+    margin: 0 auto 50px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.section-title h2 {
+    font-size: 19px;
+}
+
+.section-title small {
+    color: var(--muted);
+}
+
+.categories {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.category {
+    background: #f2f4f8;
+    color: #657086;
+    padding: 9px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.category.active,
+.category:hover {
+    background: #e8efff;
+    color: var(--primary);
+}
+
+.search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.search input {
+    min-width: 0;
+    flex: 1;
+    border: 1px solid #e6eaf1;
+    border-radius: 9px;
+    padding: 10px 12px;
+    outline: none;
+}
+
+.search input:focus,
+.post-form input:focus,
+.post-form textarea:focus {
+    border-color: var(--primary);
+}
+
+.primary-btn {
+    color: white;
+    background: var(--primary);
+    border-radius: 9px;
+    padding: 10px 17px;
+}
+
+.post-form {
+    display: none;
+    margin-bottom: 22px;
+    padding: 16px;
+    border: 1px solid #e7ebf4;
+    border-radius: 12px;
+}
+
+.post-form.show {
+    display: block;
+}
+
+.post-form input,
+.post-form textarea,
+.post-form select {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 12px;
+    border: 1px solid #e1e6ef;
+    border-radius: 8px;
+    outline: none;
+    background: white;
+}
+
+.post-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.post {
+    padding: 22px 0;
+    border-top: 1px solid #edf0f5;
+}
+
+.post:first-child {
+    border-top: none;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 14px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e9efff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.author {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.post-time {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.tag {
+    display: inline-block;
+    color: #4778f5;
+    background: #edf2ff;
+    padding: 4px 9px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.post h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.post-content {
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.post-actions {
+    display: flex;
+    gap: 24px;
+    margin-top: 17px;
+}
+
+.action-btn {
+    background: transparent;
+    color: #8993a5;
+    font-size: 13px;
+}
+
+.action-btn:hover,
+.action-btn.liked {
+    color: #4778f5;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 35px 0;
+}
+
+.announcement {
+    background: linear-gradient(135deg, #fff8e9, #fffdf8);
+}
+
+.announcement h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.notice {
+    padding: 13px 0;
+    border-bottom: 1px solid #f0e9da;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.notice:last-child {
+    border-bottom: none;
+}
+
+.notice span {
+    display: block;
+    color: #a2a0a0;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    gap: 8px;
+}
+
+.stat-number {
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.topic {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.topic:last-child {
+    border: none;
+}
+
+.topic span:last-child {
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #9aa3b2;
+    font-size: 12px;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        padding: 0 18px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero {
+        margin: 18px 14px;
+        padding: 30px 23px;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .hero-art {
+        font-size: 48px;
+        padding: 0;
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+        margin: 0 14px 30px;
+        gap: 0;
+    }
+
+    .sidebar {
+        display: block;
+    }
+}
+
+@media (max-width: 430px) {
+    .hero-art {
+        display: none;
+    }
+
+    .card {
+        padding: 17px;
+    }
+
+    .category {
+        padding: 8px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">电梯工程学院<span>●</span>1263班</div>
+    <nav class="nav-links">
+        <a href="#home">首页</a>
+        <a href="#community">校园社区</a>
+        <a href="#notice">校园公告</a>
+        <a href="#topics">热门话题</a>
+    </nav>
+    <div class="user">👋 同学，你好！</div>
+</header>
+
+<section class="hero" id="home">
+    <div>
+        <h1>让校园生活更有趣 ✨</h1>
+        <p>分享校园日常，发现身边精彩。<br>
+        在这里，遇见志同道合的同学。</p>
+        <button onclick="openPostForm()">＋ 发布校园动态</button>
+    </div>
+    <div class="hero-art">🎓</div>
+</section>
+
+<main class="container">
+
+    <section class="card" id="community">
+        <div class="section-title">
+            <h2>🌿 校园社区</h2>
+            <small>分享你的校园故事</small>
+        </div>
+
+        <div class="search">
+            <input id="searchInput" placeholder="搜索帖子标题或内容..."
+                   onkeydown="if(event.key==='Enter') renderPosts()">
+            <button class="primary-btn" onclick="renderPosts()">搜索</button>
+        </div>
+
+        <div class="categories" id="categories">
+            <button class="category active" data-category="全部">全部</button>
+            <button class="category" data-category="校园生活">校园生活</button>
+            <button class="category" data-category="学习交流">学习交流</button>
+            <button class="category" data-category="失物招领">失物招领</button>
+            <button class="category" data-category="社团活动">社团活动</button>
+            <button class="category" data-category="美食分享">美食分享</button>
+        </div>
+
+        <div class="post-form" id="postForm">
+            <h3 style="margin-bottom:15px">✍️ 发布新动态</h3>
+            <input id="postTitle" maxlength="80" placeholder="输入帖子标题">
+            <select id="postCategory">
+                <option>校园生活</option>
+                <option>学习交流</option>
+                <option>失物招领</option>
+                <option>社团活动</option>
+                <option>美食分享</option>
+            </select>
+            <textarea id="postContent" maxlength="2000"
+                      placeholder="分享你的校园故事吧..."></textarea>
+            <button class="primary-btn" onclick="publishPost()">发布动态</button>
+            <button class="category" onclick="closePostForm()">取消</button>
+        </div>
+
+        <div id="postList"></div>
+    </section>
+
+    <aside class="sidebar">
+
+        <section class="card announcement" id="notice">
+            <h3>📢 校园公告</h3>
+            <div class="notice">
+                <strong>关于校园运动会的通知</strong>
+                <span>校园公告 · 示例信息</span>
+            </div>
+            <div class="notice">
+                <strong>图书馆开放时间提醒</strong>
+                <span>学习服务 · 示例信息</span>
+            </div>
+            <div class="notice">
+                <strong>校园社团招新活动开始啦</strong>
+                <span>社团活动 · 示例信息</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-title">
+                <h2>📊 社区数据</h2>
+            </div>
+            <div class="stats">
+                <div>
+                    <div class="stat-number" id="postCount">0</div>
+                    <div class="stat-label">动态数量</div>
+                </div>
+                <div>
+                    <div class="stat-number">1,286</div>
+                    <div class="stat-label">社区成员</div>
+                </div>
+                <div>
+                    <div class="stat-number">86</div>
+                    <div class="stat-label">今日互动</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" id="topics">
+            <div class="section-title">
+                <h2>🔥 热门话题</h2>
+            </div>
+            <div class="topic">
+                <span># 大学生日常</span>
+                <span>1.2k 浏览</span>
+            </div>
+            <div class="topic">
+                <span># 图书馆学习搭子</span>
+                <span>856 浏览</span>
+            </div>
+            <div class="topic">
+                <span># 校园美食推荐</span>
+                <span>632 浏览</span>
+            </div>
+            <div class="topic">
+                <span># 社团招新</span>
+                <span>428 浏览</span>
+            </div>
+        </section>
+
+    </aside>
+</main>
+
+<footer>
+    青柠校园 · 让每一次分享都有意义 © 2026
+    <br><br>
+    本页面为校园社区演示项目，公告和统计数据仅供展示。
+</footer>
+
+<script>
+const initialPosts = [
+    {
+        id: 1,
+        author: "校园生活家",
+        avatar: "🌻",
+        category: "校园生活",
+        title: "今天的校园也太美了吧！",
+        content: "午后阳光洒在操场上，路边的树也绿油油的。忙碌的学习生活里，偶尔停下来看看风景，感觉整个人都放松了。大家今天过得怎么样？",
+        time: "今天 10:30",
+        likes: 12,
+        comments: 3
+    },
+    {
+        id: 2,
+        author: "爱学习的小林",
+        avatar: "📚",
+        category: "学习交流",
+        title: "有没有一起去图书馆学习的同学？",
+        content: "最近准备期末考试，想找几个学习搭子一起去图书馆复习，互相监督、交流知识点。欢迎大家分享自己的复习方法！",
+        time: "今天 09:15",
+        likes: 8,
+        comments: 5
+    },
+    {
+        id: 3,
+        author: "吃货同学",
+        avatar: "🍜",
+        category: "美食分享",
+        title: "发现一家超好吃的校园美食！",
+        content: "最近发现食堂有几款不错的新品，价格实惠，味道也很棒。欢迎大家在评论区分享自己最喜欢的食堂窗口！",
+        time: "昨天 16:40",
+        likes: 25,
+        comments: 9
+    },
+    {
+        id: 4,
+        author: "社团小助手",
+        avatar: "🎨",
+        category: "社团活动",
+        title: "创意设计社开始招新啦！",
+        content: "喜欢绘画、摄影、设计的同学看过来！我们会定期组织创作交流活动，没有基础也可以加入，一起发现创意的乐趣。",
+        time: "昨天 14:20",
+        likes: 16,
+        comments: 4
+    }
+];
+
+let posts = initialPosts.map(p => ({...p}));
+let activeCategory = "全部";
+let likedPosts = new Set();
+
+const postList = document.getElementById("postList");
+
+document.getElementById("categories").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-category]");
+    if (!btn) return;
+
+    activeCategory = btn.dataset.category;
+
+    document.querySelectorAll(".category[data-category]")
+        .forEach(b => b.classList.toggle("active", b === btn));
+
+    renderPosts();
+});
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[ch]);
+}
+
+function renderPosts() {
+    const keyword = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+    const filtered = posts.filter(post => {
+        const matchCategory = activeCategory === "全部" ||
+            post.category === activeCategory;
+
+        const matchKeyword = (post.title + " " + post.content)
+            .toLowerCase().includes(keyword);
+
+        return matchCategory && matchKeyword;
+    });
+
+    document.getElementById("postCount").textContent = posts.length;
+
+    if (filtered.length === 0) {
+        postList.innerHTML =
+            '<div class="empty">🌱 暂无相关动态，试试其他关键词吧！</div>';
+        return;
+    }
+
+    postList.innerHTML = filtered.map(post => `
+        <article class="post">
+            <div class="post-meta">
+                <div class="avatar">${escapeHTML(post.avatar)}</div>
+                <div>
+                    <div class="author">${escapeHTML(post.author)}</div>
+                    <div class="post-time">${escapeHTML(post.time)}</div>
+                </div>
+            </div>
+
+            <div class="tag">${escapeHTML(post.category)}</div>
+            <h3>${escapeHTML(post.title)}</h3>
+            <div class="post-content">${escapeHTML(post.content)}</div>
+
+            <div class="post-actions">
+                <button class="action-btn ${likedPosts.has(post.id) ? "liked" : ""}"
+                    onclick="toggleLike(${post.id})">
+                    ${likedPosts.has(post.id) ? "💙" : "🤍"}
+                    点赞 ${post.likes}
+                </button>
+                <button class="action-btn"
+                    onclick="showComment(${post.id})">
+                    💬 评论 ${post.comments}
+                </button>
+            </div>
+        </article>
+    `).join("");
+}
+
+function openPostForm() {
+    document.getElementById("postForm").classList.add("show");
+    document.getElementById("postTitle").focus();
+}
+
+function closePostForm() {
+    document.getElementById("postForm").classList.remove("show");
+}
+
+function publishPost() {
+    const title = document.getElementById("postTitle").value.trim();
+    const content = document.getElementById("postContent").value.trim();
+    const category = document.getElementById("postCategory").value;
+
+    if (!title || !content) {
+        alert("请填写帖子标题和内容！");
+        return;
+    }
+
+    const newPost = {
+        id: Date.now(),
+        author: "校园新同学",
+        avatar: "😊",
+        category,
+        title,
+        content,
+        time: "刚刚发布",
+        likes: 0,
+        comments: 0
+    };
+
+    posts.unshift(newPost);
+
+    document.getElementById("postTitle").value = "";
+    document.getElementById("postContent").value = "";
+    document.getElementById("searchInput").value = "";
+
+    activeCategory = "全部";
+
+    document.querySelectorAll(".category[data-category]")
+        .forEach(b => b.classList.toggle(
+            "active", b.dataset.category === "全部"
+        ));
+
+    closePostForm();
+    renderPosts();
+}
+
+function toggleLike(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+
+    if (likedPosts.has(id)) {
+        likedPosts.delete(id);
+        post.likes--;
+    } else {
+        likedPosts.add(id);
+        post.likes++;
+    }
+
+    renderPosts();
+}
+
+function showComment(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+
+    const comment = prompt("给这条动态写一句评论：");
+    if (comment === null || !comment.trim()) return;
+
+    post.comments++;
+    renderPosts();
+
+    alert("评论已添加到本次页面互动中！");
+}
+
+renderPosts();
+</script>
+
+</body>
+</html>
